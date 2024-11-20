@@ -2,6 +2,13 @@ package Controller;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import Service.MessageService;
+import Model.Account;
+import Service.AccountService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.javalin.Javalin;
+import io.javalin.http.Context;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -14,9 +21,24 @@ public class SocialMediaController {
      * suite must receive a Javalin object from this method.
      * @return a Javalin app object which defines the behavior of the Javalin controller.
      */
+    public AccountService accountService;
+    public MessageService messageService;
+
+    public SocialMediaController(){
+        this.accountService = new AccountService();
+        this.messageService = new MessageService();
+    }
+
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.get("example-endpoint", this::exampleHandler);
+        app.post("/register", this::registration );
+        app.post("/login", this::login);
+        app.post("/messages", this::messageHandler);
+        app.get("/messages",this::getMessagesHandler);
+        app.get("/messages/{message_id}", this::messageByIdHandler);
+        app.delete("/messages/{message_id}", this::deleteMessageHandler);
+        app.patch("/messages/{message_id}", this::patchMessageHandler);
+        app.get("/accounts/{account_id}/messages", this::userMessageHandler);
 
         return app;
     }
@@ -25,9 +47,43 @@ public class SocialMediaController {
      * This is an example handler for an example endpoint.
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
-    private void exampleHandler(Context context) {
-        context.json("sample text");
+
+    private void registration (Context ctx) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account addedAccount = accountService.registerAccount(account);
+        if(addedAccount!=null){
+            ctx.json(mapper.writeValueAsString(addedAccount));
+        }else{
+            ctx.status(400);
+        }
     }
+
+    private void login (Context context){
+
+    }
+
+    private void messageHandler(Context context){
+
+    }
+
+    private void getMessagesHandler(Context context){
+
+    }
+    private void messageByIdHandler(Context context){
+
+    }
+    private void deleteMessageHandler(Context context){
+
+    }
+
+    private void patchMessageHandler(Context context){
+
+    }
+    private void userMessageHandler(Context context){
+
+    }
+
 
 
 }
