@@ -4,11 +4,13 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import Service.MessageService;
 import Model.Account;
+import Model.Message;
 import Service.AccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+import java.util.*;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -34,7 +36,7 @@ public class SocialMediaController {
         app.post("/register", this::registration );
         app.post("/login", this::login);
         app.post("/messages", this::messageHandler);
-        app.get("/messages",this::getMessagesHandler);
+        app.get("/messages",this::getAllMessagesHandler);
         app.get("/messages/{message_id}", this::messageByIdHandler);
         app.delete("/messages/{message_id}", this::deleteMessageHandler);
         app.patch("/messages/{message_id}", this::patchMessageHandler);
@@ -71,18 +73,38 @@ public class SocialMediaController {
 
     }
 
-    private void messageHandler(Context context){
-
+    private void messageHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        Message addedMessage = messageService.insertMessage(message);
+        if(addedMessage!=null){
+            ctx.json(mapper.writeValueAsString(addedMessage)).status(200);
+        }else{
+            ctx.status(400);
+        }
     }
 
-    private void getMessagesHandler(Context context){
-
+    private void getAllMessagesHandler(Context ctx) throws JsonProcessingException{
+        List<Message> messages = messageService.getAllMessages();
+        ctx.json(messages).status(200);
     }
-    private void messageByIdHandler(Context context){
 
+    private void messageByIdHandler(Context ctx) throws JsonProcessingException{
+        Message ans = MessageService.getMessageById(ctx.pathParam("message_id"));
+        if (ans != null){
+            ctx.json(ans).status(200);
+        }else{
+            ctx.status(200);
+        }
+        
     }
-    private void deleteMessageHandler(Context context){
-
+    private void deleteMessageHandler(Context ctx){
+        Message ans = MessageService.deleteMessageById(ctx.pathParam("message_id"));
+        if (ans != null){
+            ctx.json(ans).status(200);
+        }else{
+            ctx.status(200);
+        }
     }
 
     private void patchMessageHandler(Context context){
