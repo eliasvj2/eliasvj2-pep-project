@@ -5,7 +5,7 @@ import java.util.*;
 
 public class MessageService {
     public AccountDAO accountDAO;
-    public MessageDAO messageDAO;
+    public static MessageDAO messageDAO;
     public MessageService(){
         this.accountDAO = new AccountDAO();
         this.messageDAO = new MessageDAO();
@@ -26,5 +26,16 @@ public class MessageService {
      public static Message deleteMessageById(String messageID){
         int messageid = Integer.parseInt(messageID);
         return MessageDAO.deleteMessageById(messageid);
+     }
+     public static Message updateMessage(Message message){
+      if(!message.getMessage_text().equals("") && message.getMessage_text().length() <= 255 && messageDAO.checkMessageIdExists(message) != -1){
+         return MessageDAO.updateMessage(message);
+      }
+      return null;
+      
+     }
+     public List<Message> getAllMessagesByUser(String postedBy){
+      int posted_by = Integer.parseInt(postedBy);
+      return messageDAO.getAllMessagesByUser(posted_by);
      }
 }

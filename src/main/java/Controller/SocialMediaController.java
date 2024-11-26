@@ -107,11 +107,21 @@ public class SocialMediaController {
         }
     }
 
-    private void patchMessageHandler(Context context){
-
+    private void patchMessageHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        int messageID = Integer.parseInt(ctx.pathParam("message_id"));
+        message.setMessage_id(messageID);
+        Message updatedMessage = MessageService.updateMessage(message);
+        if(updatedMessage!=null){
+            ctx.json(mapper.writeValueAsString(updatedMessage)).status(200);
+        }else{
+            ctx.status(400);
+        }
     }
-    private void userMessageHandler(Context context){
-
+    private void userMessageHandler(Context ctx){
+        List<Message> messages = messageService.getAllMessagesByUser(ctx.pathParam("account_id"));
+        ctx.json(messages).status(200);
     }
 
 
