@@ -14,12 +14,11 @@ public class AccountDAO {
     public Account addAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
-//          Write SQL logic here. You should only be inserting with the name column, so that the database may
-//          automatically generate a primary key.
+//          Write SQL logic here.
             String sql = "INSERT INTO account (username, password) values (?, ?);" ;
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            //write preparedStatement's setString method here.
+            //write preparedStatement
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
             preparedStatement.executeUpdate();
@@ -36,12 +35,11 @@ public class AccountDAO {
     public Account getAccountByUsername(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
-//          Write SQL logic here. You should only be inserting with the name column, so that the database may
-//          automatically generate a primary key.
+//          Write SQL logic here.
             String sql = "SELECT * FROM account WHERE username = '?';" ;
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            //write preparedStatement's setString method here.
+            //write preparedStatement
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.executeQuery();
             ResultSet pkeyResultSet = preparedStatement.getGeneratedKeys();
@@ -57,12 +55,11 @@ public class AccountDAO {
     public Account login(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
-//          Write SQL logic here. You should only be inserting with the name column, so that the database may
-//          automatically generate a primary key.
+//          Write SQL logic here. 
             String sql = "SELECT * FROM account WHERE username = ? AND password = ?;" ;
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            //write preparedStatement's setString method here.
+            //write preparedStatement
             preparedStatement.setString(1, account.getUsername());
             preparedStatement.setString(2, account.getPassword());
             

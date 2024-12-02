@@ -16,12 +16,11 @@ public class MessageDAO {
     public Message addMessage(Message message){
         Connection connection = ConnectionUtil.getConnection();
         try {
-//          Write SQL logic here. You should only be inserting with the name column, so that the database may
-//          automatically generate a primary key.
+//          Write SQL logic here
             String sql = "INSERT INTO message (posted_by, message_text, time_posted_epoch) VALUES (?,?,?);" ;
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            //write preparedStatement's setString method here.
+            //write preparedStatement
             preparedStatement.setInt(1, message.getPosted_by());
             preparedStatement.setString(2, message.getMessage_text());
             preparedStatement.setLong(3, message.getTime_posted_epoch());
@@ -39,12 +38,11 @@ public class MessageDAO {
     public int checkUser(Message message){
         Connection connection = ConnectionUtil.getConnection();
         try {
-//          Write SQL logic here. You should only be inserting with the name column, so that the database may
-//          automatically generate a primary key.
+//          Write SQL logic here. 
             String sql = "SELECT * FROM message WHERE posted_by = ?;" ;
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            //write preparedStatement's setString method here.
+            //write preparedStatement
             preparedStatement.setInt(1, message.getPosted_by());
            
             
@@ -86,7 +84,7 @@ public class MessageDAO {
             
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            //write preparedStatement's setString and setInt methods here.
+            //write preparedStatement
             preparedStatement.setInt(1, messageID);
 
             ResultSet rs = preparedStatement.executeQuery();
@@ -106,12 +104,11 @@ public static Message deleteMessageById(int messageID){
     Connection connection = ConnectionUtil.getConnection();
     try {
         Message message = getMessageById(messageID);
-//          Write SQL logic here. You should only be inserting with the name column, so that the database may
-//          automatically generate a primary key.
+//          Write SQL logic here.
         String sql = "DELETE FROM message WHERE message_id = ?;" ;
         PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-        //write preparedStatement's setString method here.
+        //write preparedStatement
         preparedStatement.setInt(1, messageID);
         preparedStatement.executeUpdate();
         return message;
@@ -123,12 +120,11 @@ public static Message deleteMessageById(int messageID){
 public static Message updateMessage(Message message){
     Connection connection = ConnectionUtil.getConnection();
         try {
-//          Write SQL logic here. You should only be inserting with the name column, so that the database may
-//          automatically generate a primary key.
+//          Write SQL logic here.
             String sql = "UPDATE message SET message_text = ? WHERE message_id = ?;" ;
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            //write preparedStatement's setString method here.
+            //write preparedStatement.
             preparedStatement.setString(1, message.getMessage_text());
             preparedStatement.setInt(2, message.getMessage_id());
             preparedStatement.executeUpdate();
@@ -143,12 +139,11 @@ public static Message updateMessage(Message message){
 public int checkMessageIdExists(Message message){
     Connection connection = ConnectionUtil.getConnection();
     try {
-//          Write SQL logic here. You should only be inserting with the name column, so that the database may
-//          automatically generate a primary key.
+//          Write SQL logic here. 
         String sql = "SELECT * FROM message WHERE message_id = ?;" ;
         PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-        //write preparedStatement's setString method here.
+        //write preparedStatement
         preparedStatement.setInt(1, message.getMessage_id());
        
         
